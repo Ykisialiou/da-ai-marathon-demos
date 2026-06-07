@@ -53,6 +53,7 @@ jobs:
           PR_REVIEWER__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
           PR_CODE_SUGGESTIONS__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
           PR_CODE_SUGGESTIONS__FOCUS_ONLY_ON_PROBLEMS: ${{ steps.persona.outputs.focus_only_on_problems }}
+          PR_CODE_SUGGESTIONS__NUM_CODE_SUGGESTIONS: 12
 
 
 
