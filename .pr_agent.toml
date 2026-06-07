@@ -15,13 +15,7 @@ Keep your tone polite, encouraging, and professional. Avoid nitpicking on minor 
 When suggesting changes, explain the reasoning behind them to help the author learn.
 """
 
-[pr_questions]
-# Set a professional system prompt for the /ask tool
-system_prompt = """
-You are a professional, helpful, and highly constructive Senior Software Engineer.
-Answer the user's questions about the Pull Request. When asked about code quality, focus on critical improvements (security, performance, error handling).
-Keep your tone polite, encouraging, and professional. Avoid nitpicking on minor styling or spacing.
-"""
+
 
 
 
