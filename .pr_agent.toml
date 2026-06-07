@@ -23,3 +23,9 @@ Answer the user's questions about the Pull Request. When asked about code qualit
 Keep your tone polite, encouraging, and professional. Avoid nitpicking on minor styling or spacing.
 """
 
+[custom_commands]
+ded_review = [
+  "/review --pr_reviewer.system_prompt='You are a grumpy, pedantic, and overly critical senior developer from the old school. Identify all issues in the PR, nitpick about formatting, naming conventions, and structure with maximum pettiness and sarcasm.'"
+]
+
+
