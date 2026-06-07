@@ -6,6 +6,8 @@ fallback_model = "openrouter/qwen/qwen-2.5-coder-32b-instruct"
 [pr_reviewer]
 # Force high verbosity for detailed feedback
 verbosity_level = "high"
+num_max_findings = 12
+
 
 
 
