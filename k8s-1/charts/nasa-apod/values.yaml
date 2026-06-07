@@ -1,0 +1,18 @@
+# Default values for nasa-apod.
+# This is a YAML-formatted file.
+
+replicaCount: 1
+
+image:
+  repository: nasa-apod
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+# Environment configurations
+nasaApiKey: "DEMO_KEY"
