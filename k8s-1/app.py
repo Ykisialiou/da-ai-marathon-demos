@@ -1,7 +1,8 @@
 import os
 import logging
 import requests
-from flask import Flask, render_template, jsonify
+from datetime import datetime, timedelta
+from flask import Flask, render_template, jsonify, request
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -18,11 +19,22 @@ def index():
     apod_data = None
     error_message = None
     
+    # Calculate dates
+    today_str = datetime.utcnow().strftime("%Y-%m-%d")
+    yesterday_str = (datetime.utcnow() - timedelta(days=1)).strftime("%Y-%m-%d")
+    
+    # Get target date from query parameters (falls back to today)
+    target_date = request.args.get("date")
+    
+    params = {"api_key": NASA_API_KEY}
+    if target_date:
+        params["date"] = target_date
+    
     try:
-        logger.info("Fetching photo of the day from NASA APOD API...")
+        logger.info(f"Fetching photo from NASA APOD API (date: {target_date or 'today'})...")
         response = requests.get(
             NASA_API_URL, 
-            params={"api_key": NASA_API_KEY}, 
+            params=params, 
             timeout=10
         )
         
@@ -40,7 +52,14 @@ def index():
         logger.exception("Unexpected error occurred")
         error_message = f"An unexpected error occurred: {str(e)}"
 
-    return render_template("index.html", apod=apod_data, error=error_message)
+    return render_template(
+        "index.html", 
+        apod=apod_data, 
+        error=error_message,
+        today=today_str,
+        yesterday=yesterday_str,
+        current_date=target_date or today_str
+    )
 
 @app.route("/healthz")
 def healthz():
