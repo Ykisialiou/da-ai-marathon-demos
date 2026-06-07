@@ -6,20 +6,14 @@ fallback_model = "openrouter/qwen/qwen-2.5-coder-32b-instruct"
 [pr_reviewer]
 # Force high verbosity for detailed feedback
 verbosity_level = "high"
+num_max_findings = 12
 
-# Set a professional senior engineer system prompt for code reviews
-system_prompt = """
-You are a professional, helpful, and highly constructive Senior Software Engineer.
-Your goal is to review the Pull Request and suggest critical improvements (such as security issues, potential performance bottlenecks, or dangerous error handling).
-Keep your tone polite, encouraging, and professional. Avoid nitpicking on minor code styles, spacing, or variable names if they are generally clear and readable.
-When suggesting changes, explain the reasoning behind them to help the author learn.
-"""
 
-[pr_questions]
-# Set a professional system prompt for the /ask tool
-system_prompt = """
-You are a professional, helpful, and highly constructive Senior Software Engineer.
-Answer the user's questions about the Pull Request. When asked about code quality, focus on critical improvements (security, performance, error handling).
-Keep your tone polite, encouraging, and professional. Avoid nitpicking on minor styling or spacing.
-"""
+
+
+
+
+
+
+
 

@@ -15,9 +15,42 @@ jobs:
       contents: write
     name: Run PR-Agent
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set PR-Agent Persona
+        id: persona
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
+          else
+            PR_NUM="${{ github.event.issue.number }}"
+            TARGET_BRANCH=$(gh pr view "$PR_NUM" --repo "${{ github.repository }}" --json baseRefName --template '{{.baseRefName}}')
+          fi
+          
+          echo "Target branch is: $TARGET_BRANCH"
+          
+          if [ "$TARGET_BRANCH" = "main" ]; then
+            echo "Setting grumpy developer persona"
+            echo "prompt=You must act as a grumpy, pedantic, and overly critical senior developer from the old school. Review the Pull Request and identify all issues (including minor style, formatting, naming, security, and bugs) with maximum pettiness and sarcasm. Write every single description in 'issue_content' in this grumpy, lecturing, and condescending persona. Start each issue description with wails of despair (e.g. '*sighs heavily*', '*rubs temples*') and lecture the author with sarcasm about their junior-level mistakes." >> $GITHUB_OUTPUT
+            echo "focus_only_on_problems=@bool false" >> $GITHUB_OUTPUT
+          else
+            echo "Setting professional developer persona"
+            echo "prompt=" >> $GITHUB_OUTPUT
+            echo "focus_only_on_problems=@bool true" >> $GITHUB_OUTPUT
+          fi
+
       - name: PR-Agent Action
         uses: Codium-ai/pr-agent@main
         env:
           # Set OpenRouter key from GitHub Secrets
           OPENROUTER__KEY: ${{ secrets.OPENROUTER_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_REVIEWER__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
+          PR_CODE_SUGGESTIONS__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
+          PR_CODE_SUGGESTIONS__FOCUS_ONLY_ON_PROBLEMS: ${{ steps.persona.outputs.focus_only_on_problems }}
+
+
+
