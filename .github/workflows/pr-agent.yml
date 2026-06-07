@@ -48,6 +48,8 @@ jobs:
           # Set OpenRouter key from GitHub Secrets
           OPENROUTER__KEY: ${{ secrets.OPENROUTER_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTION_CONFIG__AUTO_REVIEW: false
+          GITHUB_ACTION_CONFIG__AUTO_IMPROVE: true
           PR_REVIEWER__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
           PR_CODE_SUGGESTIONS__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
           PR_CODE_SUGGESTIONS__FOCUS_ONLY_ON_PROBLEMS: ${{ steps.persona.outputs.focus_only_on_problems }}
