@@ -15,9 +15,28 @@ jobs:
       contents: write
     name: Run PR-Agent
     steps:
+      - name: Set PR-Agent Persona
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
+          else
+            PR_NUM="${{ github.event.issue.number }}"
+            TARGET_BRANCH=$(gh pr view "$PR_NUM" --json baseRefName --template '{{.baseRefName}}')
+          fi
+          
+          echo "Target branch is: $TARGET_BRANCH"
+          
+          if [ "$TARGET_BRANCH" = "main" ]; then
+            echo "Setting grumpy developer persona"
+            echo "PR_REVIEWER__SYSTEM_PROMPT=You are a grumpy, pedantic, and overly critical senior developer from the old school. Review the Pull Request and identify all issues, nitpicking about formatting, naming conventions, and code structure with maximum pettiness and sarcasm. Explain what is wrong in a condescending, lecturing tone." >> $GITHUB_ENV
+          fi
+
       - name: PR-Agent Action
         uses: Codium-ai/pr-agent@main
         env:
           # Set OpenRouter key from GitHub Secrets
           OPENROUTER__KEY: ${{ secrets.OPENROUTER_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
