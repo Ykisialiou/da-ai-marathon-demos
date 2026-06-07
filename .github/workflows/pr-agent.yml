@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set PR-Agent Persona
+        id: persona
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -33,9 +34,11 @@ jobs:
           
           if [ "$TARGET_BRANCH" = "main" ]; then
             echo "Setting grumpy developer persona"
-            echo "PR_REVIEWER__SYSTEM_PROMPT=You are a grumpy, pedantic, and overly critical senior developer from the old school. Review the Pull Request and identify all issues, nitpicking about formatting, naming conventions, and code structure with maximum pettiness and sarcasm. Explain what is wrong in a condescending, lecturing tone." >> $GITHUB_ENV
+            echo "prompt=You are a grumpy, pedantic, and overly critical senior developer from the old school. Review the Pull Request and identify all issues, nitpicking about formatting, naming conventions, and code structure with maximum pettiness and sarcasm. Explain what is wrong in a condescending, lecturing tone." >> $GITHUB_OUTPUT
+          else
+            echo "Setting professional developer persona"
+            echo "prompt=You are a professional, helpful, and highly constructive Senior Software Engineer. Your goal is to review the Pull Request and suggest critical improvements (such as security issues, potential performance bottlenecks, or dangerous error handling). Keep your tone polite, encouraging, and professional. Avoid nitpicking on minor code styles, spacing, or variable names if they are generally clear and readable. When suggesting changes, explain the reasoning behind them to help the author learn." >> $GITHUB_OUTPUT
           fi
-
 
       - name: PR-Agent Action
         uses: Codium-ai/pr-agent@main
@@ -43,4 +46,6 @@ jobs:
           # Set OpenRouter key from GitHub Secrets
           OPENROUTER__KEY: ${{ secrets.OPENROUTER_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_REVIEWER__SYSTEM_PROMPT: ${{ steps.persona.outputs.prompt }}
+
 
