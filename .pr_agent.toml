@@ -8,6 +8,9 @@ fallback_model = "openrouter/qwen/qwen-2.5-coder-32b-instruct"
 verbosity_level = "high"
 num_max_findings = 12
 
+[pr_code_suggestions]
+focus_only_on_problems = false
+
 
 
 
