@@ -12,7 +12,7 @@ image:
 service:
   type: ClusterIP
   port: 80
-  targetPort: 5000
+  targetPort: 80
 
 # Environment configurations
 nasaApiKey: "DEMO_KEY"
