@@ -36,10 +36,14 @@ jobs:
             echo "Setting grumpy developer persona"
             echo "prompt=You must act as a pedantic and highly critical senior developer. Review the Pull Request and identify all issues (including minor style, formatting, naming, security, and bugs). Be extremely thorough and point out every single flaw, even the smallest ones like unused variables, bad naming, and plain-text secrets. Write every description in a lecturing and strict persona." >> $GITHUB_OUTPUT
             echo "focus_only_on_problems=@bool false" >> $GITHUB_OUTPUT
+            echo "new_score_mechanism=@bool false" >> $GITHUB_OUTPUT
+            echo "suggestions_score_threshold=0" >> $GITHUB_OUTPUT
           else
             echo "Setting professional developer persona"
             echo "prompt=" >> $GITHUB_OUTPUT
             echo "focus_only_on_problems=@bool true" >> $GITHUB_OUTPUT
+            echo "new_score_mechanism=@bool true" >> $GITHUB_OUTPUT
+            echo "suggestions_score_threshold=0" >> $GITHUB_OUTPUT
           fi
 
       - name: PR-Agent Action
@@ -53,6 +57,8 @@ jobs:
           PR_REVIEWER__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
           PR_CODE_SUGGESTIONS__EXTRA_INSTRUCTIONS: ${{ steps.persona.outputs.prompt }}
           PR_CODE_SUGGESTIONS__FOCUS_ONLY_ON_PROBLEMS: ${{ steps.persona.outputs.focus_only_on_problems }}
+          PR_CODE_SUGGESTIONS__NEW_SCORE_MECHANISM: ${{ steps.persona.outputs.new_score_mechanism }}
+          PR_CODE_SUGGESTIONS__SUGGESTIONS_SCORE_THRESHOLD: ${{ steps.persona.outputs.suggestions_score_threshold }}
           PR_CODE_SUGGESTIONS__NUM_CODE_SUGGESTIONS: 12
           PR_CODE_SUGGESTIONS__NUM_CODE_SUGGESTIONS_PER_CHUNK: 12
 
