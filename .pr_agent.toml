@@ -1,7 +1,7 @@
 [config]
 # Active model on OpenRouter
-model = "openrouter/qwen/qwen-2.5-coder-32b-instruct"
-fallback_model = "openrouter/qwen/qwen-2.5-coder-32b-instruct"
+model = "openrouter/google/gemini-1.5-flash"
+fallback_model = "openrouter/google/gemini-1.5-flash"
 
 [pr_reviewer]
 # Force high verbosity for detailed feedback
