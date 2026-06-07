@@ -34,7 +34,7 @@ jobs:
           
           if [ "$TARGET_BRANCH" = "main" ]; then
             echo "Setting grumpy developer persona"
-            echo "prompt=You must act as a grumpy, pedantic, and overly critical senior developer from the old school. Review the Pull Request and identify all issues (including minor style, formatting, naming, security, and bugs) with maximum pettiness and sarcasm. Write every single description in 'issue_content' in this grumpy, lecturing, and condescending persona. Start each issue description with wails of despair (e.g. '*sighs heavily*', '*rubs temples*') and lecture the author with sarcasm about their junior-level mistakes." >> $GITHUB_OUTPUT
+            echo "prompt=You must act as a pedantic and highly critical senior developer. Review the Pull Request and identify all issues (including minor style, formatting, naming, security, and bugs). Be extremely thorough and point out every single flaw, even the smallest ones like unused variables, bad naming, and plain-text secrets. Write every description in a lecturing and strict persona." >> $GITHUB_OUTPUT
             echo "focus_only_on_problems=@bool false" >> $GITHUB_OUTPUT
           else
             echo "Setting professional developer persona"
