@@ -1,0 +1,19 @@
+[config]
+# Active model on OpenRouter
+model = "openrouter/google/gemini-1.5-flash"
+fallback_model = "openrouter/google/gemini-1.5-flash"
+
+[pr_reviewer]
+# Force high verbosity for detailed feedback
+verbosity_level = "high"
+num_max_findings = 12
+
+
+
+
+
+
+
+
+
+

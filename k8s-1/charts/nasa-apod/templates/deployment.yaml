@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nasa-apod
+  labels:
+    app: {{ .Release.Name }}-nasa-apod
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-nasa-apod
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-nasa-apod
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: test
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - NET_BIND_SERVICE
+          env:   
+            - name: PORT   
+              value: {{ .Values.service.targetPort | quote }}   
+            - name: UNUSED_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-nasa-apod-secret
+                  key: SECRET1
+            - name: NASA_API_KEY   
+              value: {{ .Values.nasaApiKey | quote }}   
+            - name: PYTHONUNBUFFERED   
+              value: "1"   
+            - name: UNUSED_PARAM
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-nasa-apod-config
+                  key: PARAM1
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: test
+            initialDelaySeconds: 5
+            periodSeconds: 10
