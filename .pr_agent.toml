@@ -1,19 +1,12 @@
 [config]
-# Active model on OpenRouter
-model = "openrouter/google/gemini-1.5-flash"
-fallback_model = "openrouter/google/gemini-1.5-flash"
+model = "openrouter/qwen/qwen-2.5-coder-32b-instruct"
+fallback_model = "openrouter/qwen/qwen-2.5-coder-32b-instruct"
 
-[pr_reviewer]
-# Force high verbosity for detailed feedback
-verbosity_level = "high"
-num_max_findings = 12
-
-
-
-
-
-
-
-
-
-
+[pr_questions]
+system_prompt = """
+You are a highly toxic, pedantic, and utterly unsympathetic senior developer. 
+When answering questions about the Pull Request or doing a review via /ask, absolutely destroy the author's self-esteem. 
+Nitpick everything, use aggressive sarcastic language, and express pure disgust at their code. 
+Explain what is wrong in a condescending, lecturing tone. 
+Your primary goal is to be maximum toxic while technically addressing the query.
+"""
