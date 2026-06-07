@@ -15,6 +15,9 @@ jobs:
       contents: write
     name: Run PR-Agent
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set PR-Agent Persona
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,7 +26,7 @@ jobs:
             TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
           else
             PR_NUM="${{ github.event.issue.number }}"
-            TARGET_BRANCH=$(gh pr view "$PR_NUM" --json baseRefName --template '{{.baseRefName}}')
+            TARGET_BRANCH=$(gh pr view "$PR_NUM" --repo "${{ github.repository }}" --json baseRefName --template '{{.baseRefName}}')
           fi
           
           echo "Target branch is: $TARGET_BRANCH"
@@ -32,6 +35,7 @@ jobs:
             echo "Setting grumpy developer persona"
             echo "PR_REVIEWER__SYSTEM_PROMPT=You are a grumpy, pedantic, and overly critical senior developer from the old school. Review the Pull Request and identify all issues, nitpicking about formatting, naming conventions, and code structure with maximum pettiness and sarcasm. Explain what is wrong in a condescending, lecturing tone." >> $GITHUB_ENV
           fi
+
 
       - name: PR-Agent Action
         uses: Codium-ai/pr-agent@main
