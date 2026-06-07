@@ -22,11 +22,13 @@ spec:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
-          env:
-            - name: NASA_API_KEY
-              value: {{ .Values.nasaApiKey | quote }}
-            - name: PORT
-              value: {{ .Values.service.targetPort | quote }}
+          env:   
+            - name: PORT   
+              value: {{ .Values.service.targetPort | quote }}   
+            - name: PYTHONUNBUFFERED   
+              value: "1"   
+            - name: NASA_API_KEY   
+              value: {{ .Values.nasaApiKey | quote }}   
           livenessProbe:
             httpGet:
               path: /healthz
