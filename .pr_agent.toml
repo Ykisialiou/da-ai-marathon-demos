@@ -1,6 +1,6 @@
 [config]
-model = "openrouter/google/gemini-1.5-flash"
-fallback_model = "openrouter/google/gemini-1.5-flash"
+model = "openrouter/google/gemini-3.0-flash"
+fallback_model = "openrouter/google/gemini-3.0-flash"
 
 [pr_questions]
 system_prompt = """
